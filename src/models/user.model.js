@@ -15,6 +15,7 @@ const userSchema = mongoose.Schema(
     email: {
       type: String,
       reqiuired: true,
+      unique: true,
       lowercase: true,
       trim: true,
     },
@@ -51,7 +52,7 @@ const userSchema = mongoose.Schema(
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
 
-  this.password = bcrypt.hash(this.password, 10);
+  this.password = await bcrypt.hash(this.password, 10);
   next();
 });
 
